@@ -33,7 +33,7 @@ const InputError = require('../exceptions/InputError');
         }
 
         if (response.isBoom) {
-            const statusCode = response.output.statusCode || 500; // Tetapkan default 500 jika statusCode tidak ada
+            const statusCode = response.output.statusCode || 500;
             const newResponse = h.response({
                 status: 'fail',
                 message: 'Payload content length greater than maximum allowed: 1000000',
