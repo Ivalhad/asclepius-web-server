@@ -29,15 +29,29 @@ async function postPredictHandler(request, h) {
 
 }
 
-// async function getPredictHistories(request, h) {
-//   const histories = (await predictionsCollection.get()).docs.map((doc) =>
-//     doc.data()
-//   );
-//   const data = histories.map((item) => ({
-//     id: item.id,
-//     history: item,
-//   }));
-//   return h.response({ status: 'success', data }).code(200);
-// }
+async function getPredictHistories(request, h) {
+    const { Firestore } = require('@google-cloud/firestore');
+    const db = new Firestore();
+    const predictCollection = db.collection('predictions');
 
-module.exports = postPredictHandler;
+    const snapshot = await predictCollection.get();
+    const data = snapshot.docs.map((doc) => {
+        const docData = doc.data();
+        return {
+            id: docData.id,
+            history: {
+                result: docData.result,
+                createdAt: docData.createdAt,
+                suggestion: docData.suggestion,
+                id: docData.id,
+            },
+        };
+    });
+
+    return h.response({
+        status: 'success',
+        data,
+    }).code(200);
+}
+
+module.exports = { postPredictHandler, getPredictHistories };
