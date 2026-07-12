@@ -9,6 +9,8 @@ const routes = [
                 allow: 'multipart/form-data',
                 multipart: true,
                 maxBytes: 1000000,
+                output: 'data',
+                parse: true,
             }
         }
     },
