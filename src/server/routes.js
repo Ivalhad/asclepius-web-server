@@ -1,6 +1,16 @@
 const { postPredictHandler, getPredictHistories } = require('../server/handler');
 const routes = [
     {
+        path: '/',
+        method: 'GET',
+        handler: () => {
+            return {
+                status: 'success',
+                message: 'Asclepius Backend is running successfully!'
+            };
+        }
+    },
+    {
         path: '/predict',
         method: 'POST',
         handler: postPredictHandler,
