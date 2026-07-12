@@ -55,6 +55,8 @@ async function predictClassification(model, image) {
 
         return { confidenceScore: resultScore, result, suggestion };
     } catch (error) {
+        console.error("Prediction Error:", error.message || error);
+        
         if (error instanceof InputError) {
             throw error;
         }
