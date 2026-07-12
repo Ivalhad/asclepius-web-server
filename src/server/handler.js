@@ -31,7 +31,9 @@ async function postPredictHandler(request, h) {
 
 async function getPredictHistories(request, h) {
     const { Firestore } = require('@google-cloud/firestore');
-    const db = new Firestore();
+    const db = new Firestore({
+        projectId: process.env.GOOGLE_CLOUD_PROJECT,
+    });
     const predictCollection = db.collection('predictions');
 
     const snapshot = await predictCollection.get();
