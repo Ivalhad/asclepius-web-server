@@ -33,12 +33,24 @@ const InputError = require('../exceptions/InputError');
         }
 
         if (response.isBoom) {
-            const statusCode = response.output.statusCode || 500;
+            const statusCode = response.output.statusCode;
+            if (statusCode === 413) {
+                const newResponse = h.response({
+                    status: 'fail',
+                    message: 'Payload content length greater than maximum allowed: 1000000',
+                });
+                newResponse.code(413);
+                return newResponse;
+            }
+
             const newResponse = h.response({
                 status: 'fail',
-                message: 'Payload content length greater than maximum allowed: 1000000',
+                message: 'Terjadi kesalahan dalam melakukan prediksi'
             });
-            newResponse.code(statusCode);
+            newResponse.code(statusCode || 500);
+
+            console.error("Hapi Error:", response.message);
+
             return newResponse;
         }
 
